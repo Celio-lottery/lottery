@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>台灣樂透即時開獎號碼</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #f9f9f9; }
+    h2 { margin-top: 2em; }
+    .lottery { margin-bottom: 2em; background: #fff; padding: 1em; border-radius: 8px; box-shadow: 0 0 10px #ddd; }
+  </style>
+</head>
+<body>
+  <h1>台灣樂透即時開獎號碼</h1>
+  <div id="lottery-results"></div>
+
+  <script>
+    const lotteries = [
+      { name: "大樂透", api: "https://www.twlotteryapi.com/api/lotto649" },
+      { name: "威力彩", api: "https://www.twlotteryapi.com/api/superlotto638" },
+      { name: "今彩539", api: "https://www.twlotteryapi.com/api/daily539" },
+      { name: "3星彩", api: "https://www.twlotteryapi.com/api/3star" },
+      { name: "4星彩", api: "https://www.twlotteryapi.com/api/4star" },
+    ];
+
+    const container = document.getElementById("lottery-results");
+
+    lotteries.forEach(lottery => {
+      fetch(lottery.api)
+        .then(res => res.json())
+        .then(data => {
+          const div = document.createElement("div");
+          div.className = "lottery";
+          div.innerHTML = `
+            <h2>${lottery.name}</h2>
+            <p><strong>期別：</strong>${data.issue}</p>
+            <p><strong>開獎日期：</strong>${data.date}</p>
+            <p><strong>號碼：</strong>${data.numbers}</p>
+            ${data.special ? `<p><strong>特別號：</strong>${data.special}</p>` : ""}
+          `;
+          container.appendChild(div);
+        })
+        .catch(err => {
+          const div = document.createElement("div");
+          div.className = "lottery";
+          div.innerHTML = `<h2>${lottery.name}</h2><p>資料取得失敗</p>`;
+          container.appendChild(div);
+        });
+    });
+  </script>
+</body>
+</html>
