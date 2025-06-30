@@ -44,4 +44,12 @@
           container.appendChild(div);
         })
         .catch(err => {
-          const div = document.createElement("d
+          const div = document.createElement("div");
+          div.className = "lottery";
+          div.innerHTML = `<h2>${item.name}</h2><p class="error">⚠️ 無法取得資料</p>`;
+          container.appendChild(div);
+        });
+    });
+  </script>
+</body>
+</html>
