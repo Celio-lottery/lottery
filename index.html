@@ -17,12 +17,13 @@
 
   <script>
     const container = document.getElementById("lottery-results");
+    const proxy = "https://corsproxy.io/?"; // ← CORS 解決方案
     const sources = [
-      { name: "大樂透", url: "https://www.twlotteryapi.com/api/lotto649" },
-      { name: "威力彩", url: "https://www.twlotteryapi.com/api/superlotto638" },
-      { name: "今彩539", url: "https://www.twlotteryapi.com/api/daily539" },
-      { name: "3星彩", url: "https://www.twlotteryapi.com/api/3star" },
-      { name: "4星彩", url: "https://www.twlotteryapi.com/api/4star" },
+      { name: "大樂透", url: proxy + "https://www.twlotteryapi.com/api/lotto649" },
+      { name: "威力彩", url: proxy + "https://www.twlotteryapi.com/api/superlotto638" },
+      { name: "今彩539", url: proxy + "https://www.twlotteryapi.com/api/daily539" },
+      { name: "3星彩", url: proxy + "https://www.twlotteryapi.com/api/3star" },
+      { name: "4星彩", url: proxy + "https://www.twlotteryapi.com/api/4star" },
     ];
 
     container.innerHTML = "";
