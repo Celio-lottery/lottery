@@ -17,19 +17,19 @@
 
   <script>
     const container = document.getElementById("lottery-results");
-    const proxy = "https://corsproxy.io/?"; // ← CORS 解決方案
+    const proxy = "https://twlotto-proxy.celios.workers.dev/";
     const sources = [
-      { name: "大樂透", url: proxy + "https://www.twlotteryapi.com/api/lotto649" },
-      { name: "威力彩", url: proxy + "https://www.twlotteryapi.com/api/superlotto638" },
-      { name: "今彩539", url: proxy + "https://www.twlotteryapi.com/api/daily539" },
-      { name: "3星彩", url: proxy + "https://www.twlotteryapi.com/api/3star" },
-      { name: "4星彩", url: proxy + "https://www.twlotteryapi.com/api/4star" },
+      { name: "大樂透", url: "lotto649" },
+      { name: "威力彩", url: "superlotto638" },
+      { name: "今彩539", url: "daily539" },
+      { name: "3星彩", url: "3star" },
+      { name: "4星彩", url: "4star" },
     ];
 
     container.innerHTML = "";
 
     sources.forEach(item => {
-      fetch(item.url)
+      fetch(proxy + item.url)
         .then(res => res.json())
         .then(data => {
           const div = document.createElement("div");
@@ -44,12 +44,4 @@
           container.appendChild(div);
         })
         .catch(err => {
-          const div = document.createElement("div");
-          div.className = "lottery";
-          div.innerHTML = `<h2>${item.name}</h2><p class="error">⚠️ 無法取得資料</p>`;
-          container.appendChild(div);
-        });
-    });
-  </script>
-</body>
-</html>
+          const div = document.createElement("d
