@@ -5,28 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>台灣樂透即時開獎號碼</title>
   <style>
-    body { font-family: sans-serif; padding: 2em; background: #f9f9f9; }
-    .lottery { margin-bottom: 2em; background: #fff; padding: 1em; border-radius: 8px; box-shadow: 0 0 10px #ddd; }
+    body { font-family: sans-serif; padding: 2em; background: #f0f0f0; }
+    .lottery { margin-bottom: 2em; background: white; padding: 1em; border-radius: 8px; box-shadow: 0 0 8px #ccc; }
     h1 { text-align: center; }
     .error { color: red; }
   </style>
 </head>
 <body>
   <h1>台灣樂透即時開獎號碼</h1>
-  <div id="lottery-results"></div>
+  <div id="lottery-results">載入中...</div>
 
   <script>
-    const proxies = {
-      "大樂透": "https://celio-lotto-api.pages.dev/lotto649",
-      "威力彩": "https://celio-lotto-api.pages.dev/superlotto638",
-      "今彩539": "https://celio-lotto-api.pages.dev/daily539",
-      "3星彩": "https://celio-lotto-api.pages.dev/3star",
-      "4星彩": "https://celio-lotto-api.pages.dev/4star"
+    const apis = {
+      "大樂透": "https://twlotto-api.pages.dev/lotto649",
+      "威力彩": "https://twlotto-api.pages.dev/superlotto638",
+      "今彩539": "https://twlotto-api.pages.dev/daily539",
+      "3星彩": "https://twlotto-api.pages.dev/3star",
+      "4星彩": "https://twlotto-api.pages.dev/4star"
     };
+
     const container = document.getElementById("lottery-results");
     container.innerHTML = "";
 
-    Object.entries(proxies).forEach(([name, url]) => {
+    for (const [name, url] of Object.entries(apis)) {
       fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -41,13 +42,13 @@
           `;
           container.appendChild(div);
         })
-        .catch(err => {
+        .catch(() => {
           const div = document.createElement("div");
           div.className = "lottery";
-          div.innerHTML = `<h2>${name}</h2><p class="error">⚠️ 資料載入失敗</p>`;
+          div.innerHTML = `<h2>${name}</h2><p class="error">⚠️ 無法取得資料</p>`;
           container.appendChild(div);
         });
-    });
+    }
   </script>
 </body>
 </html>
