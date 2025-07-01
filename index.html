@@ -1,54 +1,111 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>台灣樂透即時開獎號碼</title>
-  <style>
-    body { font-family: sans-serif; padding: 2em; background: #f0f0f0; }
-    .lottery { margin-bottom: 2em; background: white; padding: 1em; border-radius: 8px; box-shadow: 0 0 8px #ccc; }
-    h1 { text-align: center; }
-    .error { color: red; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣樂透彩即時開獎號碼</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; }
+        .lottery-section { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 5px; background-color: #f9f9f9; }
+        .lottery-section h3 { margin-top: 0; color: #333; }
+        .lottery-date { font-weight: bold; color: #555; margin-bottom: 10px; display: block; }
+        .lottery-numbers { font-size: 1.2em; color: #007bff; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .loading { text-align: center; color: #666; }
+    </style>
 </head>
 <body>
-  <h1>台灣樂透即時開獎號碼</h1>
-  <div id="lottery-results">載入中...</div>
+    <div class="container">
+        <h1>台灣樂透彩即時開獎號碼</h1>
+        <p>此網頁將自動顯示台灣彩券各項樂透彩的最新開獎號碼及日期。</p>
 
-  <script>
-    const apis = {
-      "大樂透": "https://celio-lotto-api.pages.dev/lotto649",
-      "威力彩": "https://twlotto-api.pages.dev/superlotto638",
-      "今彩539": "https://twlotto-api.pages.dev/daily539",
-      "3星彩": "https://twlotto-api.pages.dev/3star",
-      "4星彩": "https://twlotto-api.pages.dev/4star"
-    };
+        <div class="lottery-section">
+            <h2>大樂透</h2>
+            <span class="lottery-date" id="dlt-date">載入中...</span>
+            <div class="lottery-numbers" id="dlt-numbers">載入中...</div>
+        </div>
 
-    const container = document.getElementById("lottery-results");
-    container.innerHTML = "";
+        <div class="lottery-section">
+            <h2>威力彩</h2>
+            <span class="lottery-date" id="wlc-date">載入中...</span>
+            <div class="lottery-numbers" id="wlc-numbers">載入中...</div>
+        </div>
 
-    for (const [name, url] of Object.entries(apis)) {
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const div = document.createElement("div");
-          div.className = "lottery";
-          div.innerHTML = `
-            <h2>${name}</h2>
-            <p><strong>期別：</strong>${data.issue}</p>
-            <p><strong>開獎日：</strong>${data.date}</p>
-            <p><strong>號碼：</strong>${data.numbers}</p>
-            ${data.special ? `<p><strong>特別號：</strong>${data.special}</p>` : ""}
-          `;
-          container.appendChild(div);
-        })
-        .catch(() => {
-          const div = document.createElement("div");
-          div.className = "lottery";
-          div.innerHTML = `<h2>${name}</h2><p class="error">⚠️ 無法取得資料</p>`;
-          container.appendChild(div);
+        <div class="lottery-section">
+            <h2>今彩539</h2>
+            <span class="lottery-date" id="539-date">載入中...</span>
+            <div class="lottery-numbers" id="539-numbers">載入中...</div>
+        </div>
+
+        <div class="lottery-section">
+            <h2>3星彩</h2>
+            <span class="lottery-date" id="3s-date">載入中...</span>
+            <div class="lottery-numbers" id="3s-numbers">載入中...</div>
+        </div>
+
+        <div class="lottery-section">
+            <h2>4星彩</h2>
+            <span class="lottery-date" id="4s-date">載入中...</span>
+            <div class="lottery-numbers" id="4s-numbers">載入中...</div>
+        </div>
+    </div>
+
+    <script>
+        // 建議使用的第三方 API 服務
+        // 請注意：以下 URL 僅為示意，您需要找到實際可用的 API 服務。
+        // 免費的 API 可能會有使用限制或需要申請 API Key。
+        // 您可以搜尋 "台灣彩券 API" 或 "Taiwan Lottery API" 尋找相關服務。
+        const API_BASE_URL = 'YOUR_LOTTERY_API_BASE_URL'; // <-- 請替換為您找到的 API 服務網址
+
+        async function fetchLotteryData(lotteryType, dateElementId, numbersElementId) {
+            const dateElement = document.getElementById(dateElementId);
+            const numbersElement = document.getElementById(numbersElementId);
+
+            dateElement.textContent = '載入中...';
+            numbersElement.textContent = '載入中...';
+
+            try {
+                // 這裡的 API 呼叫會根據您使用的第三方 API 服務而有所不同
+                // 假設 API 端點是 /api/lotteryType，並返回 JSON 格式的日期和號碼
+                // 例如：API_BASE_URL/dlt, API_BASE_URL/wlc 等
+                const response = await fetch(`${API_BASE_URL}/${lotteryType}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // 假設 API 返回的資料結構為 { date: "YYYY/MM/DD", numbers: "XX,XX,XX..." }
+                dateElement.textContent = `開獎日期：${data.date}`;
+                numbersElement.textContent = `開獎號碼：${data.numbers}`;
+
+            } catch (error) {
+                console.error(`Error fetching ${lotteryType} data:`, error);
+                dateElement.textContent = '載入失敗';
+                numbersElement.textContent = '載入失敗或無資料';
+                numbersElement.classList.add('error');
+            }
+        }
+
+        // 頁面載入時自動擷取資料
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLotteryData('dlt', 'dlt-date', 'dlt-numbers'); // 大樂透
+            fetchLotteryData('wlc', 'wlc-date', 'wlc-numbers'); // 威力彩
+            fetchLotteryData('539', '539-date', '539-numbers'); // 今彩539
+            fetchLotteryData('3s', '3s-date', '3s-numbers');   // 3星彩
+            fetchLotteryData('4s', '4s-date', '4s-numbers');   // 4星彩
         });
-    }
-  </script>
+
+        // 您也可以設定定時更新，例如每小時更新一次
+        // setInterval(() => {
+        //     fetchLotteryData('dlt', 'dlt-date', 'dlt-numbers');
+        //     fetchLotteryData('wlc', 'wlc-date', 'wlc-numbers');
+        //     fetchLotteryData('539', '539-date', '539-numbers');
+        //     fetchLotteryData('3s', '3s-date', '3s-numbers');
+        //     fetchLotteryData('4s', '4s-date', '4s-numbers');
+        // }, 3600000); // 3600000 毫秒 = 1 小時
+
+    </script>
 </body>
 </html>
