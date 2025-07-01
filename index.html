@@ -5,21 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台灣樂透彩即時開獎號碼</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
-        .container { max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1, h2 { color: #0056b3; }
-        .lottery-section { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 5px; background-color: #f9f9f9; }
-        .lottery-section h3 { margin-top: 0; color: #333; }
-        .lottery-date { font-weight: bold; color: #555; margin-bottom: 10px; display: block; }
-        .lottery-numbers { font-size: 1.2em; color: #007bff; font-weight: bold; }
-        .error { color: red; font-weight: bold; }
-        .loading { text-align: center; color: #666; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #eef2f7;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+        .lottery-section {
+            background-color: #f9fcff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            transition: transform 0.2s ease-in-out;
+        }
+        .lottery-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        .lottery-section h2 {
+            color: #2a6fbd;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+        .lottery-section h2::before {
+            content: "🎲"; /* Emoji for visual appeal */
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+        .lottery-date {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.1em;
+        }
+        .lottery-numbers {
+            font-size: 1.8em;
+            color: #007bff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            word-spacing: 3px;
+        }
+        .lottery-numbers span.special-number {
+            color: #dc3545; /* Red for special number */
+            margin-left: 15px;
+            font-size: 0.9em;
+        }
+        .loading {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .api-note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #856404;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .api-note strong {
+            color: #664d03;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>台灣樂透彩即時開獎號碼</h1>
+        <h1>🇹🇼 台灣樂透彩即時開獎號碼 🇹🇼</h1>
         <p>此網頁將自動顯示台灣彩券各項樂透彩的最新開獎號碼及日期。</p>
+
+        <div class="api-note">
+            <strong>重要提醒：</strong> 台灣彩券官方並未提供公開 API。此網頁的資料擷取功能需要連接至<strong>第三方 API 服務</strong>。<br>
+            請您將 JavaScript 程式碼中的 `YOUR_ACTUAL_LOTTERY_API_URL_HERE` 替換為您找到的實際 API 網址，並根據該 API 的資料格式調整程式碼中的資料解析部分。
+        </div>
 
         <div class="lottery-section">
             <h2>大樂透</h2>
@@ -53,59 +139,89 @@
     </div>
 
     <script>
-        // 建議使用的第三方 API 服務
-        // 請注意：以下 URL 僅為示意，您需要找到實際可用的 API 服務。
-        // 免費的 API 可能會有使用限制或需要申請 API Key。
-        // 您可以搜尋 "台灣彩券 API" 或 "Taiwan Lottery API" 尋找相關服務。
-        const API_BASE_URL = 'YOUR_LOTTERY_API_BASE_URL'; // <-- 請替換為您找到的 API 服務網址
+        // *** 請在這裡替換為您找到的第三方 API 服務網址！ ***
+        // 這個 URL 是一個佔位符，如果沒有可用的 API，此網頁將無法正常顯示資料。
+        // 您可能需要搜尋 "台灣彩券 API" 或 "Taiwan Lottery API" 來尋找合適的服務。
+        // 範例：如果您的 API 提供 /api/dlt, /api/wlc 等端點，則 API_BASE_URL 應為 "https://your-api-domain.com/api"
+        const API_BASE_URL = 'YOUR_ACTUAL_LOTTERY_API_URL_HERE'; 
+
+        // 預期的 API 返回資料結構範例（JSON 格式）：
+        // {
+        //   "date": "YYYY/MM/DD",
+        //   "numbers": "XX,XX,XX,XX,XX,XX",
+        //   "special_number": "YY" // 僅適用於大樂透/威力彩等有特別號的彩種
+        // }
 
         async function fetchLotteryData(lotteryType, dateElementId, numbersElementId) {
             const dateElement = document.getElementById(dateElementId);
             const numbersElement = document.getElementById(numbersElementId);
 
+            // 清除之前的內容並顯示載入狀態
             dateElement.textContent = '載入中...';
             numbersElement.textContent = '載入中...';
+            numbersElement.classList.remove('error'); // 移除錯誤樣式
+
+            // 確保 API_BASE_URL 已被替換
+            if (API_BASE_URL === 'YOUR_ACTUAL_LOTTERY_API_URL_HERE' || !API_BASE_URL.startsWith('http')) {
+                dateElement.textContent = '錯誤：API 網址未設定';
+                numbersElement.textContent = '請編輯 index.html 中的 API_BASE_URL';
+                numbersElement.classList.add('error');
+                console.error("API_BASE_URL is not set or invalid. Please update it in index.html.");
+                return;
+            }
 
             try {
-                // 這裡的 API 呼叫會根據您使用的第三方 API 服務而有所不同
-                // 假設 API 端點是 /api/lotteryType，並返回 JSON 格式的日期和號碼
-                // 例如：API_BASE_URL/dlt, API_BASE_URL/wlc 等
+                // 根據不同的彩種，拼接 API 請求的完整 URL
+                // 假設 API 的端點是 /dlt, /wlc, /539, /3s, /4s
                 const response = await fetch(`${API_BASE_URL}/${lotteryType}`);
+
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
                 }
+
                 const data = await response.json();
 
-                // 假設 API 返回的資料結構為 { date: "YYYY/MM/DD", numbers: "XX,XX,XX..." }
-                dateElement.textContent = `開獎日期：${data.date}`;
-                numbersElement.textContent = `開獎號碼：${data.numbers}`;
+                // 根據 API 返回的 JSON 結構，更新網頁內容
+                // 這裡假設 API 返回的 JSON 有 'date' 和 'numbers' 字段
+                dateElement.textContent = `開獎日期：${data.date || '未知日期'}`;
+                
+                let displayNumbers = `開獎號碼：${data.numbers || 'N/A'}`;
+
+                // 特殊號碼處理 (例如大樂透、威力彩)
+                if (data.special_number) {
+                    displayNumbers += `<span class="special-number"> 特別號：${data.special_number}</span>`;
+                } else if (data.second_number) { // 威力彩第二區
+                     displayNumbers += `<span class="special-number"> 第二區：${data.second_number}</span>`;
+                }
+
+                numbersElement.innerHTML = displayNumbers;
 
             } catch (error) {
-                console.error(`Error fetching ${lotteryType} data:`, error);
+                console.error(`擷取 ${lotteryType} 資料失敗:`, error);
                 dateElement.textContent = '載入失敗';
-                numbersElement.textContent = '載入失敗或無資料';
+                numbersElement.textContent = `無法載入資料: ${error.message}`;
                 numbersElement.classList.add('error');
             }
         }
 
-        // 頁面載入時自動擷取資料
+        // 頁面載入完成後，自動擷取所有樂透彩資料
         document.addEventListener('DOMContentLoaded', () => {
-            fetchLotteryData('dlt', 'dlt-date', 'dlt-numbers'); // 大樂透
-            fetchLotteryData('wlc', 'wlc-date', 'wlc-numbers'); // 威力彩
-            fetchLotteryData('539', '539-date', '539-numbers'); // 今彩539
-            fetchLotteryData('3s', '3s-date', '3s-numbers');   // 3星彩
-            fetchLotteryData('4s', '4s-date', '4s-numbers');   // 4星彩
+            fetchLotteryData('dlt', 'dlt-date', 'dlt-numbers');     // 大樂透
+            fetchLotteryData('wlc', 'wlc-date', 'wlc-numbers');     // 威力彩
+            fetchLotteryData('539', '539-date', '539-numbers');     // 今彩539
+            fetchLotteryData('3s', '3s-date', '3s-numbers');       // 3星彩
+            fetchLotteryData('4s', '4s-date', '4s-numbers');       // 4星彩
         });
 
-        // 您也可以設定定時更新，例如每小時更新一次
+        // 您也可以設定定時更新，例如每 5 分鐘更新一次（但請注意 API 的頻率限制）
         // setInterval(() => {
+        //     console.log("正在定時更新樂透數據...");
         //     fetchLotteryData('dlt', 'dlt-date', 'dlt-numbers');
         //     fetchLotteryData('wlc', 'wlc-date', 'wlc-numbers');
         //     fetchLotteryData('539', '539-date', '539-numbers');
         //     fetchLotteryData('3s', '3s-date', '3s-numbers');
         //     fetchLotteryData('4s', '4s-date', '4s-numbers');
-        // }, 3600000); // 3600000 毫秒 = 1 小時
-
+        // }, 300000); // 300000 毫秒 = 5 分鐘
     </script>
 </body>
 </html>
