@@ -1,34 +1,23 @@
-const container = document.getElementById("lottery-results");
-const proxy = "https://twlotto-proxy.pages.dev/";
-const sources = [
-  { name: "大樂透", url: "lotto649" },
-  { name: "威力彩", url: "superlotto638" },
-  { name: "今彩539", url: "daily539" },
-  { name: "3星彩", url: "3star" },
-  { name: "4星彩", url: "4star" },
-];
+import requests
 
-container.innerHTML = "";
+def get_dailycash539():
+    url = "https://www.taiwanlotteryapi.com/api/dailycash539/latest"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        print("API 請求失敗")
+        return
 
-sources.forEach(item => {
-  fetch(proxy + item.url)
-    .then(res => res.json())
-    .then(data => {
-      const div = document.createElement("div");
-      div.className = "lottery";
-      div.innerHTML = `
-        <h2>${item.name}</h2>
-        <p><strong>期別：</strong>${data.issue}</p>
-        <p><strong>開獎日：</strong>${data.date}</p>
-        <p><strong>號碼：</strong>${data.numbers}</p>
-        ${data.special ? `<p><strong>特別號：</strong>${data.special}</p>` : ""}
-      `;
-      container.appendChild(div);
-    })
-    .catch(err => {
-      const div = document.createElement("div");
-      div.className = "lottery";
-      div.innerHTML = `<h2>${item.name}</h2><p class="error">⚠️ 無法取得資料</p>`;
-      container.appendChild(div);
-    });
-});
+    data = response.json()
+    
+    draw_date = data['date']              # 開獎日期
+    numbers = data['numbers']             # 號碼（list）
+    draw_number = data['draw_number']     # 期別
+
+    print(f"【今彩539】")
+    print(f"期別：{draw_number}")
+    print(f"日期：{draw_date}")
+    print(f"號碼：{' '.join(map(str, numbers))}")
+
+if __name__ == "__main__":
+    get_dailycash539()
